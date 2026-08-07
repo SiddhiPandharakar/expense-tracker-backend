@@ -4,6 +4,8 @@ import com.expensetracker.backend.model.User;
 import com.expensetracker.backend.model.Expense;
 import com.expensetracker.backend.service.UserService;
 import com.expensetracker.backend.service.ExpenseService;
+import com.expensetracker.backend.model.Income;
+import com.expensetracker.backend.service.IncomeService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +19,7 @@ public class Main {
 
         UserService userService = new UserService();
         ExpenseService expenseService = new ExpenseService();
+        IncomeService incomeService = new IncomeService();
 
         System.out.println("=================================");
         System.out.println(" Expense Tracker Backend ");
@@ -28,7 +31,8 @@ public class Main {
         System.out.println("4. View Expenses");
         System.out.println("5. Update Expenses");
         System.out.println("6. Delete Expenses");
-        System.out.println("7. Exit");
+        System.out.println("7. Add Income");
+        System.out.println("8. Exit");
 
         System.out.print("Choose Option: ");
 
@@ -174,6 +178,26 @@ public class Main {
             }
 
             case 7: {
+                Income income = new Income();
+                System.out.println("User ID:");
+                income.setUserId(scanner.nextInt());
+                System.out.println("Amount:");
+                income.setAmount(scanner.nextBigDecimal());
+                scanner.nextLine();
+                System.out.print("Source: ");
+                income.setSource(scanner.nextLine());
+                System.out.print("Income Date: ");
+                income.setIncomeDate(LocalDate.parse(scanner.nextLine()));
+                boolean saved = incomeService.addIncome(income);
+                if(saved)
+                    System.out.print("Added Sucessfully");
+                else
+                    System.out.print("Failed ");
+                break;
+
+            }
+
+            case 8: {
 
                 System.out.println("Thank you for using Expense Tracker.");
                 break;
