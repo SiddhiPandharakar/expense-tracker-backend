@@ -55,4 +55,28 @@ public class ExpenseService {
 
         return expenseDAO.getExpensesByUser(userId);
     }
+
+    public boolean updateExpense(Expense expense){
+        if(expense.getId() <= 0){
+            System.out.println("Invalid Expense Id");
+            return false;
+        }
+        if(expense.getAmount().doubleValue() <= 0){
+            System.out.println("Amount must be greater than zero");
+            return false;
+        }
+        if(expense.getCategory() == null || expense.getCategory().isBlank()){
+            System.out.println("Category cant be empty");
+            return false;
+        }
+        return expenseDAO.updateExpense(expense);
+    }
+
+    public boolean deleteExpense(int expenseId){
+         if(expenseId <= 0){
+             System.out.println("Invalid Id");
+             return  false;
+         }
+         return expenseDAO.deleteExpenses(expenseId);
+    }
 }

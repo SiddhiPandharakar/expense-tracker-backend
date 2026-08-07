@@ -2,6 +2,8 @@ package com.expensetracker.backend.dao;
 
 import com.expensetracker.backend.config.DBConnection;
 import com.expensetracker.backend.model.Expense;
+import com.expensetracker.backend.service.ExpenseService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
@@ -87,5 +89,52 @@ public class ExpenseDAO {
         }
 
         return expenses;
+    }
+    public boolean updateExpense(Expense expense) {
+
+        String sql = """
+            UPDATE expenses
+            SET amount = ?,
+                category = ?,
+                description = ?,
+                expense_date = ?
+            WHERE id = ?
+            """;
+
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+
+            preparedStatement.setBigDecimal(1, expense.getAmount());
+            preparedStatement.setString(2, expense.getCategory());
+            preparedStatement.setString(3, expense.getDescription());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(expense.getExpenseDate()));
+            preparedStatement.setInt(5, expense.getId());
+
+            int rows = preparedStatement.executeUpdate();
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteExpenses(int expenseId) {
+        String sql = "DELETE FROM expenses WHERE id = ?";
+
+        try(
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ){
+            preparedStatement.setInt(1, expenseId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

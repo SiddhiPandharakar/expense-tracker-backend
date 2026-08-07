@@ -26,7 +26,9 @@ public class Main {
         System.out.println("2. Login");
         System.out.println("3. Add Expense");
         System.out.println("4. View Expenses");
-        System.out.println("5. Exit");
+        System.out.println("5. Update Expenses");
+        System.out.println("6. Delete Expenses");
+        System.out.println("7. Exit");
 
         System.out.print("Choose Option: ");
 
@@ -138,6 +140,40 @@ public class Main {
             }
 
             case 5: {
+                Expense expense = new Expense();
+                System.out.println("Expense Id:");
+                expense.setId(scanner.nextInt());
+                System.out.println("Amount");
+                expense.setAmount(scanner.nextBigDecimal());
+                scanner.nextInt();
+                System.out.println("Category");
+                expense.setCategory(scanner.nextLine());
+                System.out.println("Description");
+                expense.setDescription(scanner.nextLine());
+                System.out.println("Expense Date(yyyy-mm-dd)");
+                expense.setExpenseDate(LocalDate.parse(scanner.nextLine()));
+
+                boolean updated = expenseService.updateExpense(expense);
+                if(updated)
+                    System.out.println("Updated");
+                else
+                    System.out.println("Fail");
+
+                break;
+            }
+
+            case 6:{
+                System.out.println("Enter Expense Id");
+                int expenseId = scanner.nextInt();
+                boolean deleted = expenseService.deleteExpense(expenseId);
+                if(deleted)
+                    System.out.println("Deleted");
+                else
+                    System.out.println("Not Found");
+                break;
+            }
+
+            case 7: {
 
                 System.out.println("Thank you for using Expense Tracker.");
                 break;
