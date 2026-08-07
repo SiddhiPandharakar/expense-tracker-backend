@@ -5,6 +5,7 @@ import com.expensetracker.backend.model.Expense;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class ExpenseService {
 
@@ -46,4 +47,12 @@ public class ExpenseService {
         return expenseDAO.saveExpense(expense);
     }
 
+    public List<Expense> getExpensesByUser(int userId) {
+
+        if (userId <= 0) {
+            throw new IllegalArgumentException("Invalid User ID.");
+        }
+
+        return expenseDAO.getExpensesByUser(userId);
+    }
 }

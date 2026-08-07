@@ -1,13 +1,12 @@
 package com.expensetracker.backend;
 
 import com.expensetracker.backend.model.User;
-import com.expensetracker.backend.service.UserService;
 import com.expensetracker.backend.model.Expense;
+import com.expensetracker.backend.service.UserService;
 import com.expensetracker.backend.service.ExpenseService;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -26,7 +25,8 @@ public class Main {
         System.out.println("1. Register");
         System.out.println("2. Login");
         System.out.println("3. Add Expense");
-        System.out.println("4. Exit");
+        System.out.println("4. View Expenses");
+        System.out.println("5. Exit");
 
         System.out.print("Choose Option: ");
 
@@ -35,7 +35,7 @@ public class Main {
 
         switch (choice) {
 
-            case 1:
+            case 1: {
 
                 User user = new User();
 
@@ -56,8 +56,9 @@ public class Main {
                     System.out.println("Registration Failed");
 
                 break;
+            }
 
-            case 2:
+            case 2: {
 
                 System.out.print("Email: ");
                 String email = scanner.nextLine();
@@ -73,8 +74,9 @@ public class Main {
                     System.out.println("Login Failed");
 
                 break;
+            }
 
-            case 3:
+            case 3: {
 
                 Expense expense = new Expense();
 
@@ -92,7 +94,7 @@ public class Main {
                 System.out.print("Description: ");
                 expense.setDescription(scanner.nextLine());
 
-                System.out.print("Expense Date (yyyy-mm-dd): ");
+                System.out.print("Expense Date (yyyy-MM-dd): ");
                 expense.setExpenseDate(LocalDate.parse(scanner.nextLine()));
 
                 boolean expenseSaved = expenseService.addExpense(expense);
@@ -103,9 +105,47 @@ public class Main {
                     System.out.println("Failed to Add Expense.");
 
                 break;
+            }
 
-            default:
+            case 4: {
+
+                System.out.print("Enter User ID: ");
+                int userId = scanner.nextInt();
+
+                List<Expense> expenses = expenseService.getExpensesByUser(userId);
+
+                if (expenses.isEmpty()) {
+
+                    System.out.println("No expenses found.");
+
+                } else {
+
+                    System.out.println("\n===============================");
+                    System.out.println("Your Expenses");
+                    System.out.println("===============================");
+
+                    for (Expense expense : expenses) {
+
+                        System.out.println("----------------------------");
+                        System.out.println("Amount      : " + expense.getAmount());
+                        System.out.println("Category    : " + expense.getCategory());
+                        System.out.println("Description : " + expense.getDescription());
+                        System.out.println("Date        : " + expense.getExpenseDate());
+                    }
+                }
+
+                break;
+            }
+
+            case 5: {
+
+                System.out.println("Thank you for using Expense Tracker.");
+                break;
+            }
+
+            default: {
                 System.out.println("Invalid Choice");
+            }
         }
 
         scanner.close();
