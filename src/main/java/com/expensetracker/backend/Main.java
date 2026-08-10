@@ -32,7 +32,10 @@ public class Main {
         System.out.println("5. Update Expenses");
         System.out.println("6. Delete Expenses");
         System.out.println("7. Add Income");
-        System.out.println("8. Exit");
+        System.out.println("8. View Income");
+        System.out.println("9. Update Income");
+        System.out.println("10. Delete Income");
+        System.out.println("11. Exit");
 
         System.out.print("Choose Option: ");
 
@@ -198,6 +201,80 @@ public class Main {
             }
 
             case 8: {
+
+                System.out.print("Enter User ID: ");
+                int userId = scanner.nextInt();
+
+                List<Income> incomes = incomeService.getIncomeByUser(userId);
+
+                if (incomes.isEmpty()) {
+
+                    System.out.println("No income found.");
+
+                } else {
+
+                    System.out.println("\n===============================");
+                    System.out.println("Income History");
+                    System.out.println("===============================");
+
+                    for (Income income : incomes) {
+
+                        System.out.println("----------------------------");
+                        System.out.println("ID          : " + income.getId());
+                        System.out.println("Amount      : " + income.getAmount());
+                        System.out.println("Source      : " + income.getSource());
+                        System.out.println("Date        : " + income.getIncomeDate());
+                    }
+                }
+
+                break;
+            }
+
+            case 9: {
+
+                Income income = new Income();
+
+                System.out.print("Income ID: ");
+                income.setId(scanner.nextInt());
+
+                System.out.print("Amount: ");
+                income.setAmount(scanner.nextBigDecimal());
+
+                scanner.nextLine();
+
+                System.out.print("Source: ");
+                income.setSource(scanner.nextLine());
+
+                System.out.print("Income Date (yyyy-MM-dd): ");
+                income.setIncomeDate(LocalDate.parse(scanner.nextLine()));
+
+                boolean updated = incomeService.updateIncome(income);
+
+                if (updated)
+                    System.out.println("Income Updated Successfully.");
+                else
+                    System.out.println("Failed to Update Income.");
+
+                break;
+            }
+
+            case 10: {
+
+                System.out.print("Income ID: ");
+
+                int incomeId = scanner.nextInt();
+
+                boolean deleted = incomeService.deleteIncome(incomeId);
+
+                if (deleted)
+                    System.out.println("Income Deleted Successfully.");
+                else
+                    System.out.println("Failed to Delete Income.");
+
+                break;
+            }
+
+            case 11: {
 
                 System.out.println("Thank you for using Expense Tracker.");
                 break;
