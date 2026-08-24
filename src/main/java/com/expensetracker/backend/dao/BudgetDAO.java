@@ -83,4 +83,51 @@ public class BudgetDAO {
 
         return budgets;
     }
+
+    public boolean updateBudget(Budget budget){
+        String sql = """
+                Update budgets 
+                SET category = ?, amount = ?, month = ?, year = ?,
+                WHERE id = ?,
+                """;
+
+        try(
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+                ){
+            preparedStatement.setString(1, budget.getCategory());
+            preparedStatement.setBigDecimal(2, budget.getAmount());
+            preparedStatement.setInt(3, budget.getMonth());
+            preparedStatement.setInt(4, budget.getYear());
+            preparedStatement.setInt(5, budget.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected>0;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteBudget(int budgetId) {
+
+        String sql = "DELETE FROM budgets WHERE id = ?";
+
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            preparedStatement.setInt(1, budgetId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

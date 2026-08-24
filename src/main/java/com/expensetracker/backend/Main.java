@@ -40,6 +40,8 @@ public class Main {
         System.out.println("10. Delete Income");
         System.out.println("11. Add Budget");
         System.out.println("12. View Budgets");
+        System.out.println("13.Update Budget");
+        System.out.println("14.Delete Budget");
         System.out.println("13. Exit");
 
         System.out.print("Choose Option: ");
@@ -342,8 +344,53 @@ public class Main {
 
                 break;
             }
-
             case 13: {
+
+                Budget budget = new Budget();
+
+                System.out.print("Budget ID: ");
+                budget.setId(scanner.nextInt());
+
+                scanner.nextLine();
+
+                System.out.print("Category: ");
+                budget.setCategory(scanner.nextLine());
+
+                System.out.print("Budget Amount: ");
+                budget.setAmount(scanner.nextBigDecimal());
+
+                System.out.print("Month (1-12): ");
+                budget.setMonth(scanner.nextInt());
+
+                System.out.print("Year: ");
+                budget.setYear(scanner.nextInt());
+
+                boolean updated = budgetService.updateBudget(budget);
+
+                if (updated)
+                    System.out.println("Budget Updated Successfully.");
+                else
+                    System.out.println("Failed to Update Budget.");
+
+                break;
+            }
+            case 14: {
+
+                System.out.print("Budget ID: ");
+
+                int budgetId = scanner.nextInt();
+
+                boolean deleted = budgetService.deleteBudget(budgetId);
+
+                if (deleted)
+                    System.out.println("Budget Deleted Successfully.");
+                else
+                    System.out.println("Failed to Delete Budget.");
+
+                break;
+            }
+
+            case 15: {
 
                 System.out.println("Thank you for using Expense Tracker.");
                 break;
