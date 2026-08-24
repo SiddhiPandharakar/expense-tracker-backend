@@ -6,6 +6,8 @@ import com.expensetracker.backend.service.UserService;
 import com.expensetracker.backend.service.ExpenseService;
 import com.expensetracker.backend.model.Income;
 import com.expensetracker.backend.service.IncomeService;
+import com.expensetracker.backend.model.Budget;
+import com.expensetracker.backend.service.BudgetService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Main {
         UserService userService = new UserService();
         ExpenseService expenseService = new ExpenseService();
         IncomeService incomeService = new IncomeService();
+        BudgetService budgetService = new BudgetService();
 
         System.out.println("=================================");
         System.out.println(" Expense Tracker Backend ");
@@ -35,7 +38,9 @@ public class Main {
         System.out.println("8. View Income");
         System.out.println("9. Update Income");
         System.out.println("10. Delete Income");
-        System.out.println("11. Exit");
+        System.out.println("11. Add Budget");
+        System.out.println("12. View Budgets");
+        System.out.println("13. Exit");
 
         System.out.print("Choose Option: ");
 
@@ -275,6 +280,70 @@ public class Main {
             }
 
             case 11: {
+
+                Budget budget = new Budget();
+
+                System.out.print("User ID: ");
+                budget.setUserId(scanner.nextInt());
+
+                scanner.nextLine();
+
+                System.out.print("Category: ");
+                budget.setCategory(scanner.nextLine());
+
+                System.out.print("Budget Amount: ");
+                budget.setAmount(scanner.nextBigDecimal());
+
+                System.out.print("Month (1-12): ");
+                budget.setMonth(scanner.nextInt());
+
+                System.out.print("Year: ");
+                budget.setYear(scanner.nextInt());
+
+                boolean saved = budgetService.addBudget(budget);
+
+                if (saved)
+                    System.out.println("Budget Added Successfully.");
+                else
+                    System.out.println("Failed to Add Budget.");
+
+                break;
+            }
+
+            case 12: {
+
+                System.out.print("Enter User ID: ");
+
+                int userId = scanner.nextInt();
+
+                List<Budget> budgets =
+                        budgetService.getBudgetsByUser(userId);
+
+                if (budgets.isEmpty()) {
+
+                    System.out.println("No budgets found.");
+
+                } else {
+
+                    System.out.println("\n===============================");
+                    System.out.println("Your Budgets");
+                    System.out.println("===============================");
+
+                    for (Budget budget : budgets) {
+
+                        System.out.println("----------------------------");
+                        System.out.println("ID       : " + budget.getId());
+                        System.out.println("Category : " + budget.getCategory());
+                        System.out.println("Amount   : " + budget.getAmount());
+                        System.out.println("Month    : " + budget.getMonth());
+                        System.out.println("Year     : " + budget.getYear());
+                    }
+                }
+
+                break;
+            }
+
+            case 13: {
 
                 System.out.println("Thank you for using Expense Tracker.");
                 break;
